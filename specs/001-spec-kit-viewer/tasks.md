@@ -56,11 +56,11 @@ description: "Task list template for feature implementation"
 
 ### Implementation for User Story 1
 
-- [x] T008 [P] [US1] Implement `SpecTranslationProvider` (CodeLens) in `src/providers/SpecTranslationProvider.ts`
-- [x] T010 [US1] Create `TranslationPanel` class (Webview) in `src/panels/TranslationPanel.ts`
-- [x] T011 [P] [US1] Create React component `TranslationView` in `webviews/pages/TranslationView.tsx`
-- [x] T012 [US1] Implement `TranslationService` real API call (streaming) in `src/services/translation/FridayClient.ts`
-- [x] T013 [US1] Register commands and providers in `src/extension.ts`
+- [x] T008 [P] [US1] Implement `SpecTranslationProvider` (CodeLens) in `src/providers/SpecTranslationProvider.ts` ✅
+- [x] T010 [US1] Create `TranslationPanel` class (Webview) in `src/panels/TranslationPanel.ts` ✅
+- [x] T011 [P] [US1] Create React component `TranslationView` in `webviews/pages/TranslationView.tsx` ✅
+- [x] T012 [US1] Implement `TranslationService` real API call (streaming) in `src/services/translation/FridayClient.ts` ✅
+- [x] T013 [US1] Register commands and providers in `src/extension.ts` ✅
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 

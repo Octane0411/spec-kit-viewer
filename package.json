@@ -1,0 +1,120 @@
+{
+  "name": "spec-kit-viewer",
+  "displayName": "Spec-Kit Viewer",
+  "description": "VSCode extension for visualizing dependencies between Spec-Kit Markdown files and providing real-time Chinese translation",
+  "version": "0.1.0",
+  "publisher": "spec-kit",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "markdown",
+    "dependency",
+    "translation",
+    "visualization",
+    "spec-kit"
+  ],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "specKit.showGraph",
+        "title": "Show Dependency Graph",
+        "category": "SpecKit"
+      },
+      {
+        "command": "specKit.openTranslationPreview",
+        "title": "Open Translation Preview",
+        "category": "SpecKit"
+      },
+      {
+        "command": "specKit.translateSection",
+        "title": "Translate Section",
+        "category": "SpecKit"
+      },
+      {
+        "command": "specKit.testApiConnection",
+        "title": "Test API Connection",
+        "category": "SpecKit"
+      }
+    ],
+    "codelens": [
+      {
+        "language": "markdown",
+        "scheme": "file"
+      }
+    ],
+    "configuration": {
+      "title": "Spec-Kit Viewer",
+      "properties": {
+        "specKit.translation.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for FRIDAY translation service"
+        },
+        "specKit.translation.baseUrl": {
+          "type": "string",
+          "default": "https://friday-api.example.com",
+          "description": "Base URL for FRIDAY translation API"
+        },
+        "specKit.translation.model": {
+          "type": "string",
+          "default": "LongCat-Flash-Chat-2512",
+          "description": "Model to use for translation"
+        },
+        "specKit.translation.skipSslVerification": {
+          "type": "boolean",
+          "default": false,
+          "description": "Skip SSL certificate verification (use only for development/self-signed certificates)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^9.1.1",
+    "@types/node": "16.x",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "@vscode/test-electron": "^2.2.0",
+    "css-loader": "^6.7.0",
+    "eslint": "^8.28.0",
+    "mocha": "^10.1.0",
+    "style-loader": "^3.3.0",
+    "ts-loader": "^9.4.0",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remark": "^14.0.0",
+    "remark-parse": "^10.0.0",
+    "remark-wiki-link": "^1.0.0",
+    "unified": "^10.1.0",
+    "openai": "^4.0.0"
+  }
+}
