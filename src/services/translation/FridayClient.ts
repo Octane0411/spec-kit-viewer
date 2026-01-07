@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import { OpenAI } from 'openai';
 import * as vscode from 'vscode';
 import * as crypto from 'crypto';
 import { TranslationService } from './TranslationService';
@@ -33,7 +33,7 @@ export class FridayClient implements TranslationService {
 
       // Override the global HTTPS agent
       const https = require('https');
-      const originalAgent = https.globalAgent;
+      // const originalAgent = https.globalAgent; // Unused variable
 
       https.globalAgent = new https.Agent({
         rejectUnauthorized: false,
@@ -234,6 +234,7 @@ export class FridayClient implements TranslationService {
       const testIterator = this.translate('Hello', this.defaultModel);
 
       // Get the iterator and try to get the first value
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       for await (const _ of testIterator) {
         // If we get any chunk, the connection works
         return true;

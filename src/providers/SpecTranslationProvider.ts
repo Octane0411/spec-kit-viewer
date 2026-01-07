@@ -18,7 +18,7 @@ export class SpecTranslationProvider implements vscode.CodeLensProvider {
   /**
    * Provides CodeLens for Markdown files
    */
-  provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.ProviderResult<vscode.CodeLens[]> {
+  provideCodeLenses(document: vscode.TextDocument, _token: vscode.CancellationToken): vscode.ProviderResult<vscode.CodeLens[]> {
     if (document.languageId !== 'markdown') {
       return [];
     }
@@ -67,7 +67,7 @@ export class SpecTranslationProvider implements vscode.CodeLensProvider {
   /**
    * Resolves a CodeLens (optional implementation)
    */
-  resolveCodeLens(codeLens: vscode.CodeLens, token: vscode.CancellationToken): vscode.ProviderResult<vscode.CodeLens> {
+  resolveCodeLens(codeLens: vscode.CodeLens, _token: vscode.CancellationToken): vscode.ProviderResult<vscode.CodeLens> {
     return codeLens;
   }
 

@@ -70,7 +70,7 @@ export class TranslationCache {
    */
   async has(sourceText: string, model: string): Promise<boolean> {
     const cached = await this.get(sourceText, model);
-    return cached !== undefined;
+    return cached !== null;
   }
 
   /**

@@ -1,6 +1,7 @@
 import * as assert from 'assert';
 import * as sinon from 'sinon';
-import * as path from 'path';
+import './testSetup'; // Import test setup first
+// import { mockVscode } from './testSetup'; // Unused import
 import { ParserService } from '../services/parser/ParserService';
 
 describe('ParserService', () => {
@@ -363,9 +364,9 @@ Just regular text content.
 
     it('should set relative path correctly', () => {
       // Mock workspace folders for relative path calculation
-      const mockWorkspace = {
-        workspaceFolders: [{ uri: { fsPath: '/project' } }]
-      };
+      // const mockWorkspace = {
+      //   workspaceFolders: [{ uri: { fsPath: '/project' } }]
+      // }; // Unused variable
 
       // We can't easily mock vscode.workspace, so we'll test the behavior indirectly
       const result = parser.parseFile('/project/docs/test.md', 'content');

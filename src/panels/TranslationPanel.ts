@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
+// import * as path from 'path'; // Unused import
 import { createTranslationService, TranslationService } from '../services/translation/TranslationService';
 import { TranslationCache } from '../services/translation/TranslationCache';
 import { UpdateTranslationMessage, RequestTranslationMessage, WebviewMessage } from '../types';
@@ -32,7 +32,7 @@ export class TranslationPanel {
 
     // Update the content based on view changes
     this._panel.onDidChangeViewState(
-      e => {
+      _e => {
         if (this._panel.visible) {
           this._update();
         }
@@ -210,11 +210,12 @@ export class TranslationPanel {
    */
   private async _handleMessage(message: WebviewMessage): Promise<void> {
     switch (message.command) {
-      case 'requestTranslation':
+      case 'requestTranslation': {
         const requestMsg = message as RequestTranslationMessage;
         const uri = vscode.Uri.file(requestMsg.payload.path);
         await this._loadDocument(uri);
         break;
+      }
 
       case 'webviewReady':
         console.log('📨 Received webviewReady message from Webview');

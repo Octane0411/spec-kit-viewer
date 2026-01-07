@@ -88,7 +88,7 @@
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "test": "node ./out/test/runTest.js",
+    "test": "npm run test:unit",
     "test:unit": "npm run compile-tests && mocha out/test/**/*.test.js --require ./out/test/testSetup.js",
     "test:watch": "npm run compile-tests && mocha out/test/**/*.test.js --watch",
     "test:coverage": "npm run compile-tests && nyc mocha out/test/**/*.test.js"

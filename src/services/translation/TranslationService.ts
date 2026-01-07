@@ -28,7 +28,7 @@ export interface TranslationService {
  */
 export class BaseTranslationService implements TranslationService {
 
-  async *translate(text: string, model: string): AsyncIterable<string> {
+  async *translate(text: string, _model: string): AsyncIterable<string> {
     // Stub implementation - yields mock translation
     const mockTranslation = `[模拟翻译] ${text}`;
 
