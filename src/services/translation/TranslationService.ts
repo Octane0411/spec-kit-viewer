@@ -43,8 +43,8 @@ export class BaseTranslationService implements TranslationService {
   }
 
   isAvailable(): boolean {
-    // For stub implementation, always return true
-    return true;
+    // Base implementation is a fallback, not a real service
+    return false;
   }
 
   getDefaultModel(): string {

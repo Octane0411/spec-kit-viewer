@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { createHash } from 'crypto';
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
+// Use dynamic import for ESM modules to avoid CommonJS compatibility issues
+// import { unified } from 'unified';
+// import remarkParse from 'remark-parse';
 // Note: visit function will be implemented manually since unist-util-visit may not be available
 import { SpecFile, Dependency } from '../../types';
 
@@ -59,16 +60,17 @@ export class ParserService {
     const dependencies: Dependency[] = [];
 
     try {
-      // Parse markdown AST
-      const tree = unified()
-        .use(remarkParse)
-        .parse(content);
+      // TODO: Re-enable unified parsing after fixing ESM compatibility
+      // For now, use regex-based parsing as fallback
 
-      // Visit nodes manually
-      this.visitNode(tree, (node: any) => {
-        if (node.type === 'link' && node.url && this.isLocalMarkdownFile(node.url)) {
-          const targetPath = this.resolveRelativePath(sourcePath, node.url);
-          const lineNumber = this.findLineNumber(content, node.position?.start?.offset || 0);
+      // Parse standard markdown links [text](url)
+      const linkRegex = /\[([^\]]*)\]\(([^)]+)\)/g;
+      let match;
+      while ((match = linkRegex.exec(content)) !== null) {
+        const url = match[2];
+        if (this.isLocalMarkdownFile(url)) {
+          const targetPath = this.resolveRelativePath(sourcePath, url);
+          const lineNumber = this.findLineNumber(content, match.index);
 
           dependencies.push({
             sourcePath,
@@ -77,15 +79,15 @@ export class ParserService {
             line: lineNumber
           });
         }
-      });
+      }
 
       // Also check for wiki-style links [[filename]]
       const wikiLinkRegex = /\[\[([^\]]+)\]\]/g;
-      let match;
-      while ((match = wikiLinkRegex.exec(content)) !== null) {
-        const linkText = match[1];
+      let wikiMatch;
+      while ((wikiMatch = wikiLinkRegex.exec(content)) !== null) {
+        const linkText = wikiMatch[1];
         const targetPath = this.resolveWikiLink(sourcePath, linkText);
-        const lineNumber = this.findLineNumber(content, match.index);
+        const lineNumber = this.findLineNumber(content, wikiMatch.index);
 
         dependencies.push({
           sourcePath,
@@ -101,20 +103,8 @@ export class ParserService {
     return dependencies;
   }
 
-  /**
-   * Simple tree visitor implementation
-   */
-  private visitNode(node: any, visitor: (node: any) => void): void {
-    if (node) {
-      visitor(node);
-
-      if (node.children) {
-        for (const child of node.children) {
-          this.visitNode(child, visitor);
-        }
-      }
-    }
-  }
+  // Note: visitNode method removed as we're using regex parsing instead of AST
+  // TODO: Re-implement with proper AST parsing when ESM compatibility is resolved
 
   /**
    * Classifies file type based on path and content
