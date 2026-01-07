@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/test/translationCache.test.ts",
+    "src/test/testSetup.ts",
+    "src/services/translation/TranslationCache.ts",
+    "src/types.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "out",
+    "src/services/parser/**/*",
+    "src/panels/**/*",
+    "src/providers/**/*",
+    "src/extension.ts"
+  ]
+}

@@ -15,7 +15,7 @@ export class TranslationCache {
   /**
    * Retrieves cached translation for the given text and model
    */
-  async get(sourceText: string, model: string): Promise<string | undefined> {
+  async get(sourceText: string, model: string): Promise<string | null> {
     const key = this.generateKey(sourceText, model);
     const cacheKey = `${TranslationCache.CACHE_KEY_PREFIX}${key}`;
 
@@ -23,19 +23,20 @@ export class TranslationCache {
       const entry: TranslationCacheEntry | undefined = await this.memento.get(cacheKey);
 
       if (!entry) {
-        return undefined;
+        return null;
       }
 
       // Check if entry is expired
       if (Date.now() - entry.timestamp > TranslationCache.CACHE_TTL) {
         await this.memento.update(cacheKey, undefined);
-        return undefined;
+        return null;
       }
 
       return entry.translatedText;
     } catch (error) {
-      console.error('Error retrieving from translation cache:', error);
-      return undefined;
+      const err = error as Error;
+      console.error('Error retrieving from translation cache:', err.message);
+      return null;
     }
   }
 
@@ -56,9 +57,11 @@ export class TranslationCache {
 
     try {
       await this.memento.update(cacheKey, entry);
+      await this.updateIndex(key);
       await this.cleanupOldEntries();
     } catch (error) {
-      console.error('Error storing in translation cache:', error);
+      const err = error as Error;
+      console.error('Error storing in translation cache:', err.message);
     }
   }
 
@@ -80,7 +83,8 @@ export class TranslationCache {
         await this.memento.update(key, undefined);
       }
     } catch (error) {
-      console.error('Error clearing translation cache:', error);
+      const err = error as Error;
+      console.error('Error clearing translation cache:', err.message);
     }
   }
 
@@ -104,7 +108,8 @@ export class TranslationCache {
         totalSize
       };
     } catch (error) {
-      console.error('Error getting cache stats:', error);
+      const err = error as Error;
+      console.error('Error getting cache stats:', err.message);
       return { entryCount: 0, totalSize: 0 };
     }
   }
@@ -125,7 +130,7 @@ export class TranslationCache {
     // This is a limitation we'll have to work with
     // For now, we'll maintain a separate index of keys
     const indexKey = `${TranslationCache.CACHE_KEY_PREFIX}index`;
-    const index: string[] = await this.memento.get(indexKey, []);
+    const index: string[] = this.memento.get(indexKey, []);
     return index.map(key => `${TranslationCache.CACHE_KEY_PREFIX}${key}`);
   }
 
@@ -134,7 +139,7 @@ export class TranslationCache {
    */
   private async updateIndex(key: string): Promise<void> {
     const indexKey = `${TranslationCache.CACHE_KEY_PREFIX}index`;
-    const index: string[] = await this.memento.get(indexKey, []);
+    const index: string[] = this.memento.get(indexKey, []);
 
     if (!index.includes(key)) {
       index.push(key);
@@ -178,7 +183,8 @@ export class TranslationCache {
       const indexKey = `${TranslationCache.CACHE_KEY_PREFIX}index`;
       await this.memento.update(indexKey, remainingKeys);
     } catch (error) {
-      console.error('Error cleaning up cache:', error);
+      const err = error as Error;
+      console.error('Error cleaning up cache:', err.message);
     }
   }
 }
